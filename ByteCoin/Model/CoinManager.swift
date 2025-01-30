@@ -15,5 +15,17 @@ struct CoinManager {
     
     let currencyArray = ["AUD", "BRL","CAD","CNY","EUR","GBP","HKD","IDR","ILS","INR","JPY","MXN","NOK","NZD","PLN","RON","RUB","SEK","SGD","USD","ZAR"]
 
+    func numCurrencies()->Int{
+        return currencyArray.count
+    }
     
+    func getCurrency(index: Int)-> String{
+        return currencyArray[index]
+    }
+    
+    func getCoinPrice(for index: Int)-> Double{
+        let selectedCurrency = currencyArray[index]
+        
+        return 0.0
+    }
 }
