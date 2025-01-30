@@ -26,7 +26,11 @@ struct CoinManager {
     
     func getCoinPrice(for index: Int)-> Double{
         let selectedCurrency = currencyArray[index]
-        
+        makeApiRequest(currency: selectedCurrency)
         return 0.0
+    }
+    
+    func makeApiRequest(currency: String){
+        
     }
 }
