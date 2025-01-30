@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var pickerView: UIPickerView!
     
-    let coinManager = CoinManager()
+    var coinManager = CoinManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,13 +24,21 @@ class ViewController: UIViewController {
         self.pickerView.dataSource = self
         
         self.pickerView.delegate = self
+        
+        self.coinManager.delegate = self
     }
 
 
 }
 
-extension ViewController: UIPickerViewDataSource{
+
+
+
+// MARK: - Picker View
+
+extension ViewController: UIPickerViewDelegate, UIPickerViewDataSource{
     
+   // number of rows in column
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         let numRows = coinManager.numCurrencies()
         return numRows
@@ -42,19 +50,43 @@ extension ViewController: UIPickerViewDataSource{
     }
     
     
-}
 
-
-extension ViewController: UIPickerViewDelegate{
-    
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String?{
         return self.coinManager.getCurrency(index: row)
     }
     
+    // do something when some thing is picked
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int){
-        let price = self.coinManager.getCoinPrice(for: row)
+        print(row)
+        
+        self.coinManager.getCoinPrice(for: row)
+        
+       // self.currencyLabel.text = coinManager.getCurrency(index: row)
       //  print(selectedRow)
+        
     }
   
+    
+}
+
+
+// MARK: - update crypyto price
+
+extension ViewController: CoinManagerDelegate{
+    
+    func didResponseUpdate(_ data: ResponseModel) {
+        
+        DispatchQueue.main.async {
+            self.currencyLabel.text = String(data.asset_id_quote)
+            self.valueLabel.text = String(format: "%.2f", data.rate)
+        }
+        
+        
+    }
+    
+    func didFailWithError(error: any Error) {
+        print(error)
+    }
+    
     
 }
